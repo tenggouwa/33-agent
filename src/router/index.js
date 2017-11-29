@@ -34,11 +34,5 @@ export default new Router({
         require(['../views/agent/myAgent.vue'],resolve);
       }
     },
-    {
-      path: '/innovate',
-      component: function(resolve){
-        require(['../views/tradepage/innovte'],resolve)
-      }
-    },
   ]
 })
