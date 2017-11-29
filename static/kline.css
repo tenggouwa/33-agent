@@ -1,0 +1,90 @@
+blockquote,
+q {
+    quotes: none;
+}
+
+blockquote:before,
+blockquote:after,
+q:before,
+q:after {
+    content: '';
+    content: none;
+}
+
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+
+canvas {
+    display: block;
+    display: none
+}
+
+#loading {
+    background-image: url(./img/loading.gif);
+    z-index: 9999;
+    position: absolute;
+
+    top: 200px;
+    width: 100px;
+    height: 100px;
+    display: none
+}
+
+.canvas_group {
+    position: relative
+}
+
+.canvas_group canvas {
+    left: 0;
+    position: absolute;
+    top: 0;
+}
+
+
+/* Box Model */
+
+*,
+*:before,
+*:after {
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+.plot_container {
+  /*min-width: 100%;*/
+    width: 100%;
+    height:100px;
+    position: inherit;
+    display: inline-block;
+    top: 0px;
+    left: 0px;
+    right: 0px;
+    bottom: 3px;
+    overflow-x: none ;
+    align-content: center;
+    
+}
+#background{
+
+    position:absolute;
+     // width: 100%;
+    // height:100px;
+    background: url(./img/Klogo.png) 10% no-repeat;
+     opacity: 0.3;
+    background-size:100%;
+    width: 440px;
+    height: 170px;
+    line-height: 170px;
+    vertical-align: middle;
+    text-align: center;
+}
+
+
+
+
+
+
