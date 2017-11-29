@@ -46,22 +46,6 @@ export default{
           link:"/index",
         },
         {
-          name:"交易中心",
-          link:"/tradecenter",
-        },
-        {
-          name:"我的资产",
-          link:"/myassets",
-        },
-        {
-          name:"帮助中心",
-          link:"/help",
-        },
-        {
-          name:"APP下载",
-          link:"/appload",
-        },
-        {
           name:"申请代理",
           link:"/apply",
           badge:true,
