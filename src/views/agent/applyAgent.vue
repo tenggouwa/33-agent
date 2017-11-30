@@ -5,27 +5,19 @@
       <div class="banner-box">
         <img src="../../assets/img/apply/banner.png" alt="">
       </div>
-      <!-- <location :dataList="locationData"></location> -->
+      <div class="indextab">
+        <el-steps :active="2" :align-center="true">
+          <el-step title="填写申请信息"></el-step>
+          <el-step title="审核中"></el-step>
+          <el-step title="申请通过"></el-step>
+        </el-steps>
+      </div>
       <div class="apply-form">
         <div class="tab-line">
-          <button :class="{active:applyItem===0}" @click="applyOne">经纪商申请</button>
-          <button :class="{active:applyItem===1}" @click="applyTwo">代理商申请</button>
+          <h2>经纪商申请</h2>
         </div>
         <div class="apply-form-box">
-          <div @click="niceChange" class="change-box"><span v-if="applycheck==true"> < </span><span v-if="applycheck==false"> > </span></div>
-          <!-- <div class="change-box" v-show="applycheck==false"> < </div> -->
-          <div class="left-part" v-show="applyItem===1 && applycheck == true">
-            <h4>代理商申请标准:</h4>
-            <p>1.代理商分多个等级VIP1-VIP6；</p>
-            <p>2.代理资格主要两项指标：所辖客户月累计手续费、当月活跃客户（至少成交1笔）；</p>
-            <p>3.每月底统计代理商的代理资格，两项指标均达标，可升级；</p>
-            <p>4.所辖客户的交易手续费返佣比例，根据当月等级，从20%-30%自动调节；</p>
-            <p>5.所辖客户另外推荐的客户所产生的手续费，只计入所辖客户的返佣，不计入当前代理返佣；</p>
-            <p>6.代理商本人交易，所产生的手续费，只计入他推荐人的返佣，不计入本人的返佣；</p>
-            <p>7.如所辖客户有不当得利的行为（恶意刷单、利用BUG等），不计入当月累计手续费；</p>
-            <p>8.每月10号前发放上月佣金；</p> 
-          </div>
-          <div class="left-part part2" v-show="applyItem===0 &&applycheck == true">
+          <div class="left-part part2">
             <h4>经济商申请标准:</h4>
             <h5>经纪商是需要具有一定资源并能独立运营的公司、机构或团体。</h5>
             <p>1.经纪商所辖客户交易手续费的70%为返佣；</p>
@@ -35,21 +27,22 @@
             <p>5.经纪商可在后台查看直发客户及代理客户的交易统计表；</p>
           </div>
           <div class="right-part" id="containDiv">
-            <el-form v-model="applyform" label-width="80px" v-show="applyItem===1">
-              <el-form-item label="姓名:" >
+            <el-form v-model="applyform" label-width="138px">
+              <el-form-item label="公司/机构名称:">
+                <el-input v-model="applyform.name" placeholder="请输入您所在的公司或者机构名称"></el-input>
+              </el-form-item>
+              <el-form-item label="姓名:">
                 <el-input v-model="applyform.name" placeholder="请输入您的姓名"></el-input>
               </el-form-item>
               <el-form-item label="手机号:">
                 <el-input v-model="applyform.name" placeholder="请输入您的手机号码"></el-input>
               </el-form-item>
-              <el-form-item label="QQ号:">
-                <el-input v-model="applyform.name" placeholder="请输入您的QQ号码"></el-input>
+              <el-form-item label="其他联系方式:" class="textareabox">
+                <!-- <el-input type="textarea" ></el-input> -->
+                <textarea  cols="30" rows="2" v-model="applyform.desc" placeholder="请输入您的其他联系方式 如：微信、邮箱等"></textarea>
               </el-form-item>
-              <el-form-item label="微信号:">
-                <el-input v-model="applyform.name" placeholder="请输入您的微信号码"></el-input>
-              </el-form-item>
-              <el-form-item label="所在地区:" class="location-box">
-                <el-select v-model="locationGroup.country" clearable placeholder="所属国家">
+              <el-form-item label="所在地:" class="location-box">
+                <el-select v-model="locationGroup.country" class="firstbox" clearable placeholder="所属国家">
                   <el-option
                     v-for="item in countryOptions"
                     :key="item.value"
@@ -57,44 +50,7 @@
                     :value="item.value">
                   </el-option>
                 </el-select>
-                <el-select v-model="locationGroup.country" clearable placeholder="所属国家">
-                  <el-option
-                    v-for="item in countryOptions"
-                    :key="item.value"
-                    :label="item.label"
-                    :value="item.value">
-                  </el-option>
-                </el-select>
-                <el-select v-model="locationGroup.country" clearable placeholder="所属国家">
-                  <el-option
-                    v-for="item in countryOptions"
-                    :key="item.value"
-                    :label="item.label"
-                    :value="item.value">
-                  </el-option>
-                </el-select>
-              </el-form-item>
-              <el-form-item>
-                <el-button>立即申请</el-button>  
-              </el-form-item>
-            </el-form>
-            <el-form v-model="applyform" label-width="138px" v-show="applyItem===0">
-              <el-form-item label="公司/机构名称:">
-                <el-input v-model="applyform.name" placeholder="请输入您所在的公司或者机构名称"></el-input>
-              </el-form-item>
-              <el-form-item label="公司/机构成立时间:">                
-                <el-input v-model="applyform.name" placeholder="请输入公司或机构成立的时间"></el-input>
-              </el-form-item>
-              <el-form-item label="公司/机构所在地:" class="location-box">
-                <el-select v-model="locationGroup.country" clearable placeholder="所属国家">
-                  <el-option
-                    v-for="item in countryOptions"
-                    :key="item.value"
-                    :label="item.label"
-                    :value="item.value">
-                  </el-option>
-                </el-select>
-                <el-select v-model="locationGroup.city" clearable placeholder="所属城市">
+                <el-select v-model="locationGroup.city" class="firstbox" clearable placeholder="所属城市">
                   <el-option
                     v-for="item in cityOptions"
                     :key="item.value"
@@ -102,24 +58,6 @@
                     :value="item.value">
                   </el-option>
                 </el-select>
-              </el-form-item>
-              <el-form-item label="姓名:">
-                <el-input v-model="applyform.name" placeholder="请输入您的姓名"></el-input>
-              </el-form-item>
-              <el-form-item label="电话:">
-                <el-input v-model="applyform.name" placeholder="请输入您的电话或者手机号码"></el-input>
-              </el-form-item>
-              <el-form-item label="身份证号:">
-                <el-input v-model="applyform.name" placeholder="请输入您的身份证号"></el-input>
-              </el-form-item>
-              <el-form-item label="与公司/机构关系:">
-                <el-input v-model="applyform.name" placeholder="请输入您与公司或者机构的关系"></el-input>
-              </el-form-item>             
-              <el-form-item label="QQ号:">
-                <el-input v-model="applyform.name" placeholder="请输入您的QQ号码"></el-input>
-              </el-form-item>
-              <el-form-item label="微信号:">
-                <el-input v-model="applyform.name" placeholder="请输入您的微信号码"></el-input>
               </el-form-item>
               <el-form-item>
                 <el-button>立即申请</el-button>  
@@ -152,13 +90,12 @@
       </div>
       
     </div>
-    <indexFooter></indexFooter>
   </div>
 </template>
 
 <script>
 import indexHeader from "../../components/header.vue"
-import indexFooter from "../../components/footer.vue"
+// import indexFooter from "../../components/footer.vue"
 import location from "../../components/location.vue"
 export default{
   data(){
@@ -188,11 +125,12 @@ export default{
           baseUrl:"static/img/apply/wx.png",
           hoverUrl:"static/img/apply/wxHover.png",
           state:0,
-          text:["yfx0323"],
+          text:["326982014@qq.com"],
         },
       ],
       applyform:{
-        name:""
+        name:"",
+        desc:'',
       },
       locationGroup:{
         country:"",
@@ -260,7 +198,7 @@ export default{
   },
   components:{
     indexHeader,
-    indexFooter,
+    // indexFooter,
     location
   },
   mounted(){
@@ -295,7 +233,7 @@ export default{
 }
 </script>
 
-<style>
+<style scoped>
 .apply-content{
   padding-top:75px;
   .tt-line{
@@ -340,58 +278,20 @@ export default{
       p:last-child{
         margin-bottom: 0;
       }
-      /*li{
-        border:1px solid #dcdcdc;
-        width: 176px;
-        height: 176px;
-        transform: rotate(45deg);
-        margin-right: 72px;
-        background-color: #fff;
-        .item{
-          width: 100%;
-          height: 100%;
-          line-height: 176px;
-          transform: rotate(-45deg);
-        }
-        .item2{
-          width: 100%;
-          height: 100%;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          transform: rotate(-45deg);
-          color: #fff;
-          font-size: 15px;
-        }
-        &:hover{
-          background-color: #1a6fa6;
-        }
-      }*/
     }
   }
   .apply-form{
-    padding-top: 50px;
     background: #fff;
     width: 1200px;
     margin: 0 auto 20px auto;
     .tab-line{
       border-bottom: 1px solid #e5e5e5;
       margin-bottom: 50px;
-      button{
-        display: inline-block;
-        width: 138px;
-        height: 36px;
-        font-size: 18px;
-        background-color: #e5e5e5;
-        border: 0;
-        cursor: pointer;        
-      }
-      button+button{
-        margin-left: 6px;
-      }
-      button.active{
-        background-color: #0176c3;
-        color: #fff;
+      height: 80px;
+      h2{
+        line-height: 80px;
+        font-size: 24px;
+        font-weight: bold;
       }
     }
     &-box{
@@ -435,7 +335,20 @@ export default{
             line-height: 40px;
             padding-top: 0;
           }
+          .textareabox{
+            textarea{
+              width: 342px!important;
+              min-height: 70px;
+              max-height: 120px;
+              border:1px solid #bfcbd9;
+              border-radius: 4px;
+              padding:8px 10px;
+            }
+          }
           .location-box{
+            .firstbox{
+              width: 165px;
+            }
             .el-form-item__content{
               display: flex;
             }
@@ -491,6 +404,15 @@ export default{
         }
       }     
     }
+  }
+  .indextab{
+    width: 1200px;
+    height: 110px;
+    background: #fff;
+    margin: 0 auto;
+    margin-bottom: 10px;
+    padding-left: 280px;
+    padding-top: 20px;  
   }
   .banner-box{
     height: 400px;

@@ -39,17 +39,17 @@
       <div class="coin-block">
         <div class="tras-block">
           <ul v-for="(item,index) in coinBlock">
-            <li 
-              :class="{lastBlock:i.normal,noCoin:i.nocoin}" 
-              v-for="(i,num) in item" 
-              @mouseenter="showBtn2('coinBlock',1,index,num,i)" 
+            <!-- @mouseenter="showBtn2('coinBlock',1,index,num,i)" 
               @mouseleave="showBtn2('coinBlock',0,index,num,i)"
-              @click="gohelp(i.coinname,i.normal)">
-              <div class="part" v-if="i.state!==1">
+              @click="gohelp(i.coinname,i.normal)"
+              :class="{lastBlock:i.normal,noCoin:i.nocoin}" -->
+            <li
+              v-for="(i,num) in item">
+              <div class="part">
                 <p class="name">{{i.name}}</p>
                 <p class="coin-name">{{i.coinname}}</p>
               </div>
-              <div class="part2" v-if="i.state===1&&!i.normal">
+              <!-- <div class="part2" v-if="i.state===1&&!i.normal">
                 <div class="icon iconfont" :class="i.coin" v-if="!i.nocoin"></div>
                 <p class="price" v-if="!i.nocoin">
                   <span>{{i.coinname}}/BTC：</span>
@@ -57,7 +57,7 @@
                 </p>
                 <p v-if="!i.nocoin" class="range">{{marketData[i.coinname+"BTC"].range|filterCoin}}</p>
                 <p v-if="i.nocoin" class="expect-line">敬请期待</p>
-              </div>
+              </div> -->
             </li>
           </ul>
         </div>
@@ -471,10 +471,10 @@ export default{
             color: #1a6fa6;
             margin-top: 20px;
           }
-          &:hover{
+          /*&:hover{
             background-color:rgba(26,111,166,0.95);
             border-color: #1a6fa6;
-          }
+          }*/
           &.noCoin{
             background-image: url("../../assets/img/home/no-coin.png");
             background-repeat: no-repeat;
