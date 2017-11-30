@@ -38,7 +38,6 @@
                 <el-input v-model="applyform.name" placeholder="请输入您的手机号码"></el-input>
               </el-form-item>
               <el-form-item label="其他联系方式:" class="textareabox">
-                <!-- <el-input type="textarea" ></el-input> -->
                 <textarea  cols="30" rows="2" v-model="applyform.desc" placeholder="请输入您的其他联系方式 如：微信、邮箱等"></textarea>
               </el-form-item>
               <el-form-item label="所在地:" class="location-box">
@@ -60,7 +59,7 @@
                 </el-select>
               </el-form-item>
               <el-form-item>
-                <el-button>立即申请</el-button>  
+                <el-button @click="applyNow">立即申请</el-button>  
               </el-form-item>
             </el-form>
             <p class="tip">
@@ -95,9 +94,27 @@
         <p>
           <i class="el-icon-circle-check"></i>
         </p>
-        <h5>恭喜您已经成功申请成为经济商</h5>
+        <h5>恭喜您已经成功申请成为经济商！</h5>
         <p>您可用现在的账号和密码登录后台！如有疑问，可联系我们！</p>
         <button>登录后台</button>
+      </div>
+      <!-- 弹框立即申请 -->
+      <div class="dialogapply">
+        <el-dialog
+        class="dialog-content"
+          :visible.sync="dialogVisible">
+          <span class="content"><i class="el-icon-circle-check"></i>您的申请已经提交成功！</span>
+          <p>我们会尽快通过电话与您沟通，请保持手机畅通，谢谢！</p>
+        </el-dialog>
+      </div>
+      <!-- 弹框登录提示 -->
+      <div class="dialogapply">
+        <el-dialog
+        class="dialog-content"
+          :visible.sync="dialogtit">
+          <span class="content"><i class="el-icon-information"></i>登陆后才可申请经济商！</span><br>
+          <button>立即登陆</button>
+        </el-dialog>
       </div>
     </div>
   </div>
@@ -110,6 +127,8 @@ import location from "../../components/location.vue"
 export default{
   data(){
     return{
+      dialogtit:false,
+      dialogVisible:false,
       show3: false,
       show1: true,
       applycheck:true,
@@ -214,32 +233,13 @@ export default{
     location
   },
   mounted(){
-    this.addclassdiv();
   },
   methods:{
     showBtn3(key,val,index){
       this[key][index].state=val;     
     },
-    niceChange(){
-      this.applycheck =! this.applycheck;
-      this.addclassdiv();
-    },
-    applyOne(){
-      this.applyItem=0;
-      this.applycheck=true;
-      this.addclassdiv();
-    },
-    applyTwo(){
-      this.applyItem=1;
-      this.applycheck=true;
-      this.addclassdiv();
-    },
-    addclassdiv(){
-      if(this.applycheck==false){
-        document.getElementById("containDiv").style.marginLeft="250px";
-      }else{
-        document.getElementById("containDiv").style.marginLeft="40px";
-      }
+    applyNow(){
+      this.dialogtit=true;
     }
   }
 }
@@ -468,10 +468,51 @@ export default{
       -moz-transition: all 0.3s ease 0s;
       -webkit-transition: all 0.3s ease 0s;
       -o-transition: all 0.3s ease 0s;
+      cursor: pointer;
     }
     button:hover{
       background: #1a6fa6;
       color: #fff;
+    }
+  }
+  .dialogapply{
+    .dialog-content{
+      width: 1200px!important;
+      left: 50%;
+      margin-left: -600px;
+      button{
+        border: 1px solid #e5e5e5;
+        color: #1a6fa6;
+        height: 35px;
+        width: 120px;
+        border-radius: 25px;
+        margin-top: 30px;
+        margin-bottom: 40px;
+        font-size: 16px;
+        font-weight: bold;
+        transition: all 0.3s ease 0s;
+        -moz-transition: all 0.3s ease 0s;
+        -webkit-transition: all 0.3s ease 0s;
+        -o-transition: all 0.3s ease 0s;
+        cursor: pointer;
+      }
+      button:hover{
+        background: #1a6fa6;
+        color: #fff;
+      }
+    }
+    .content{
+      font-size: 24px;
+      color: #1a6fa6;
+      i{
+        font-size: 26px;
+        margin-right: 10px;
+      }
+
+    }
+    p{
+      margin-top: 20px;
+      margin-bottom: 70px;
     }
   }
   .banner-box{
