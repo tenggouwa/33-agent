@@ -12,7 +12,7 @@
           <el-step title="申请通过"></el-step>
         </el-steps>
       </div>
-      <div class="apply-form">
+      <div class="apply-form" v-if="show1">
         <div class="tab-line">
           <h2>经纪商申请</h2>
         </div>
@@ -88,7 +88,17 @@
           </ul>
         </div>
       </div>
-      
+      <div class="success-apply" v-if="show3">
+        <div class="tab-line">
+          <h2>经纪商申请</h2>
+        </div>
+        <p>
+          <i class="el-icon-circle-check"></i>
+        </p>
+        <h5>恭喜您已经成功申请成为经济商</h5>
+        <p>您可用现在的账号和密码登录后台！如有疑问，可联系我们！</p>
+        <button>登录后台</button>
+      </div>
     </div>
   </div>
 </template>
@@ -100,6 +110,8 @@ import location from "../../components/location.vue"
 export default{
   data(){
     return{
+      show3: false,
+      show1: true,
       applycheck:true,
       applyItem:1,
       locationData:[
@@ -413,6 +425,54 @@ export default{
     margin-bottom: 10px;
     padding-left: 280px;
     padding-top: 20px;  
+  }
+  .success-apply{
+    width: 1200px;
+    background: #fff;
+    margin: 0 auto;
+    margin-bottom: 10px;
+    .tab-line{
+      border-bottom: 1px solid #e5e5e5;
+      margin-bottom: 50px;
+      height: 80px;
+      h2{
+        line-height: 80px;
+        font-size: 24px;
+        font-weight: bold;
+      }
+    }
+    p{
+      color: #666;
+      font-size: 12px;
+      i{
+        font-size: 50px;
+        color: green;
+      }
+    }
+    h5{
+        line-height: 80px;
+        font-size: 24px;
+        font-weight: bold;
+    }
+    button{
+      border: 1px solid #e5e5e5;
+      color: #1a6fa6;
+      height: 35px;
+      width: 120px;
+      border-radius: 25px;
+      margin-top: 30px;
+      margin-bottom: 60px;
+      font-size: 16px;
+      font-weight: bold;
+      transition: all 0.3s ease 0s;
+      -moz-transition: all 0.3s ease 0s;
+      -webkit-transition: all 0.3s ease 0s;
+      -o-transition: all 0.3s ease 0s;
+    }
+    button:hover{
+      background: #1a6fa6;
+      color: #fff;
+    }
   }
   .banner-box{
     height: 400px;
