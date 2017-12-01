@@ -17,7 +17,7 @@
           </el-carousel-item>
         </el-carousel>
         
-        <div class="button-line-box">         
+        <div class="button-line-box">
           <div class="button-line">
             <div class="about-line">
               <h3>ABOUT</h3>
@@ -39,15 +39,16 @@
       <div class="coin-block">
         <div class="tras-block">
           <ul v-for="(item,index) in coinBlock">
-            <!-- @mouseenter="showBtn2('coinBlock',1,index,num,i)" 
+            <li 
+              :class="{lastBlock:i.normal,noCoin:i.nocoin}" 
+              v-for="(i,num) in item" 
+              @mouseenter="showBtn2('coinBlock',1,index,num,i)" 
               @mouseleave="showBtn2('coinBlock',0,index,num,i)"
-              @click="gohelp(i.coinname,i.normal)"
-              :class="{lastBlock:i.normal,noCoin:i.nocoin}" -->
-            <li
-              v-for="(i,num) in item">
-              <div class="part">
+              @click="gohelp(i.coinname,i.normal)">
+              <div class="part" v-if="i.state!==1">
                 <p class="name">{{i.name}}</p>
                 <p class="coin-name">{{i.coinname}}</p>
+                <div class="icon iconfont" :class="i.coin" v-if="!i.nocoin"></div>
               </div>
               <!-- <div class="part2" v-if="i.state===1&&!i.normal">
                 <div class="icon iconfont" :class="i.coin" v-if="!i.nocoin"></div>
@@ -263,7 +264,7 @@ export default{
       };
     },
     
-    showBtn2(key,val,index,num,item){
+    /*showBtn2(key,val,index,num,item){
       //最后一个方块不做hover效果
       if(!item.normal){
         this[key][index][num].state=val;
@@ -271,7 +272,7 @@ export default{
       // if(index!==2||num!==2){
       //   this[key][index][num].state=val;
       // }     
-    },
+    },*/
     // showBtn(key,val){
     //   this[key]=val;
     // },
@@ -464,25 +465,25 @@ export default{
           .name{
             font-size: 17px;
             color: #666;
-            padding-top: 30px;
+            padding-top: 20px;
           }
           .coin-name{
             font-size: 40px;
             color: #1a6fa6;
             margin-top: 20px;
           }
-          /*&:hover{
+          /* &:hover{
             background-color:rgba(26,111,166,0.95);
             border-color: #1a6fa6;
-          }*/
+          } */
           &.noCoin{
             background-image: url("../../assets/img/home/no-coin.png");
             background-repeat: no-repeat;
             background-position: center;
           }
-          &.noCoin:hover{
+          /* &.noCoin:hover{
             background-image: none;
-          }
+          } */
           &.lastBlock{
             background-color: #fff;
             .name{
