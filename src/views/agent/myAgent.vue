@@ -15,12 +15,8 @@
             </li>
           </ul>
         </div>
-        <!-- <el-tabs v-model="activeName" class="tabs">
-          <el-tab-pane label="返佣列表" name="first">返佣列表</el-tab-pane>
-        </el-tabs> -->
         <div class="table-title">
           <span>返佣列表</span>
-          <!-- <div class="scroll-bar"></div> -->
         </div>
         <div class="toolLine">
           <div class="time item">
@@ -92,7 +88,6 @@
           </el-pagination>
         </div>
       </div>
-      
     </div>
     <indexFooter></indexFooter>
   </div>
