@@ -1,12 +1,12 @@
 <template>
-  <div class="apply-block">
+  <div class="apply-block" id="nice">
     <indexHeader></indexHeader>
     <div class="apply-content">
       <div class="banner-box">
         <img src="../../assets/img/apply/banner.png" alt="">
       </div>
       <div class="indextab">
-        <el-steps :active="2" :align-center="true">
+        <el-steps :active="getjindu" :align-center="true">
           <el-step title="填写申请信息"></el-step>
           <el-step title="审核中"></el-step>
           <el-step title="申请通过"></el-step>
@@ -18,9 +18,9 @@
         </div>
         <div class="apply-form-box">
           <div class="left-part part2">
-            <h4>经济商申请标准:</h4>
-            <h5>经纪商是需要具有一定资源并能独立运营的公司、机构或团体。</h5>
-            <p>1.经纪商所辖客户交易手续费的70%为返佣；</p>
+            <h4>经纪商申请标准:</h4>
+            <h5>经纪商是具有一定资源并能独立运营的公司、机构或团体。</h5>
+            <p>1.经纪商所辖客户交易手续费的一部分作为返佣；</p>
             <p>2.经纪商可自行设置客户的提款手续费标准；</p>
             <p>3.经纪商可招募代理商，并在经纪商后台调整代理商返佣标准；</p>
             <p>4.经纪商所辖客户有不当得利的行为（恶意刷单、利用BUG等），手续费不返还；</p>
@@ -29,37 +29,49 @@
           <div class="right-part" id="containDiv">
             <el-form v-model="applyform" label-width="138px">
               <el-form-item label="公司/机构名称:">
-                <el-input v-model="applyform.name" placeholder="请输入您所在的公司或者机构名称"></el-input>
+                <el-input :disabled="showG" v-model="applyform.company" placeholder="请输入您所在的公司或者机构名称"></el-input>
               </el-form-item>
               <el-form-item label="姓名:">
-                <el-input v-model="applyform.name" placeholder="请输入您的姓名"></el-input>
+                <el-input :disabled="showG" v-model="applyform.contacts" placeholder="请输入您的姓名"></el-input>
               </el-form-item>
-              <el-form-item label="手机号:">
-                <el-input v-model="applyform.name" placeholder="请输入您的手机号码"></el-input>
+              <el-form-item label="手机号:" class="only">
+                <el-input :disabled="showG" v-model="applyform.mobile" placeholder="请输入您的手机号码">
+                  <template slot="prepend">
+                    <el-select v-model="applyform.mobile_area" placeholder="请选择":disabled="showG" class="selsct">
+                      <el-option
+                        v-for="item in options"
+                        :key="item.code"
+                        :label="item.ch_name"
+                        :value="item.code">
+                      </el-option>
+                    </el-select>
+                  </template>
+                </el-input>
               </el-form-item>
-              <el-form-item label="其他联系方式:" class="textareabox">
-                <textarea  cols="30" rows="2" v-model="applyform.desc" placeholder="请输入您的其他联系方式 如：微信、邮箱等"></textarea>
+              
+              <el-form-item label="其他联系方式:">
+                <el-input :disabled="showG" type="textarea" v-model="applyform.other" placeholder="请输入您的其他联系方式 如：微信、邮箱等"></el-input>
               </el-form-item>
               <el-form-item label="所在地:" class="location-box">
-                <el-select v-model="locationGroup.country" class="firstbox" clearable placeholder="所属国家">
+                <el-select :disabled="showG" v-model="applyform.country" class="firstbox" clearable placeholder="所属国家" @change="getcont">
                   <el-option
                     v-for="item in countryOptions"
-                    :key="item.value"
-                    :label="item.label"
-                    :value="item.value">
+                    :key="item.sname"
+                    :label="item.ch_name"
+                    :value="item.sname">
                   </el-option>
                 </el-select>
-                <el-select v-model="locationGroup.city" class="firstbox" clearable placeholder="所属城市">
+                <el-select :disabled="showG||showSheng" v-model="applyform.area" class="firstbox" clearable placeholder="所属省份">
                   <el-option
                     v-for="item in cityOptions"
-                    :key="item.value"
-                    :label="item.label"
-                    :value="item.value">
+                    :key="item.id"
+                    :label="item.name"
+                    :value="item.id">
                   </el-option>
                 </el-select>
               </el-form-item>
               <el-form-item>
-                <el-button @click="applyNow">立即申请</el-button>  
+                <el-button :disabled="showG" :class="{enablebtn:showG == true}" @click="applyNow">立即申请</el-button>  
               </el-form-item>
             </el-form>
             <p class="tip">
@@ -74,7 +86,8 @@
             <h3>联系我们 快速申请</h3>
             <hr>
           </div>         
-          <h4 class="sub-title">Contact us for quick application</h4>
+          <!-- <h4 class="sub-title">Contact us for quick application</h4> -->
+          <h4 class="sub-title">Feel Free to Contact Us</h4>
           <ul class="serverList">
             <li 
               v-for="(item,index) in contactList" 
@@ -85,6 +98,7 @@
               <p v-for="i in item.text">{{i}}</p>
             </li>
           </ul>
+          <img class="erweima" v-if="erweima == true" src="../../assets/img/fx66kefufu.jpg" width="120px" alt="">
         </div>
       </div>
       <div class="success-apply" v-if="show3">
@@ -94,9 +108,9 @@
         <p>
           <i class="el-icon-circle-check"></i>
         </p>
-        <h5>恭喜您已经成功申请成为经济商！</h5>
+        <h5>恭喜您已经成功成为经纪商！</h5>
         <p>您可用现在的账号和密码登录后台！如有疑问，可联系我们！</p>
-        <button>登录后台</button>
+        <button @click="loginBack">登录后台</button>
       </div>
       <!-- 弹框立即申请 -->
       <div class="dialogapply">
@@ -112,11 +126,13 @@
         <el-dialog
         class="dialog-content"
           :visible.sync="dialogtit">
-          <span class="content"><i class="el-icon-information"></i>登陆后才可申请经济商！</span><br>
-          <button>立即登陆</button>
+          <span class="content"><i class="el-icon-information"></i>登录后才可申请经纪商！</span><br>
+          <button @click="jumptologin">立即登录</button>
         </el-dialog>
       </div>
+      <contactUs></contactUs>
     </div>
+    <!-- <contactUs></contactUs> -->
   </div>
 </template>
 
@@ -124,9 +140,15 @@
 import indexHeader from "../../components/header.vue"
 // import indexFooter from "../../components/footer.vue"
 import location from "../../components/location.vue"
+import contactUs from "../../components/contantWe.vue"
+import {ajax} from "../../assets/js/common.js"
 export default{
   data(){
     return{
+      showSheng:false,
+      options:[],
+      getjindu:0,
+      showG:false,
       dialogtit:false,
       dialogVisible:false,
       show3: false,
@@ -144,65 +166,36 @@ export default{
           baseUrl:"static/img/apply/phone.png",
           hoverUrl:"static/img/apply/phoneHover.png",
           state:0,
-          text:["400-1566-899"],
+          text:["86-17354718363"],
         },
-        {
-          baseUrl:"static/img/apply/qq.png",
-          hoverUrl:"static/img/apply/qqHover.png",
-          state:0,
-          text:["345106800","545967811"],
-        },
+        // {
+        //   baseUrl:"static/img/apply/qq.png",
+        //   hoverUrl:"static/img/apply/qqHover.png",
+        //   state:0,
+        //   text:["4001566899"],
+        // },
         {
           baseUrl:"static/img/apply/wx.png",
           hoverUrl:"static/img/apply/wxHover.png",
           state:0,
-          text:["326982014@qq.com"],
+          text:["fx66kefu"],
         },
       ],
       applyform:{
-        name:"",
-        desc:'',
+        company:"",
+        contacts:'',
+        mobile:"",
+        other:'',
+        country:"",
+        area:'',
+        mobile_area:'',
       },
       locationGroup:{
         country:"",
-        city:""
+        area:""
       },
-      countryOptions:[
-        {
-          value: '选项1',
-          label: '黄金糕'
-        },
-        {
-          value: '选项2',
-          label: '双皮奶'
-        },
-        {
-          value: '选项3',
-          label: '蚵仔煎'
-        },
-        {
-          value: '选项4',
-          label: '龙须面'
-        },
-      ],
-      cityOptions:[
-        {
-          value: '选项1',
-          label: '黄金糕'
-        },
-        {
-          value: '选项2',
-          label: '双皮奶'
-        },
-        {
-          value: '选项3',
-          label: '蚵仔煎'
-        },
-        {
-          value: '选项4',
-          label: '龙须面'
-        },
-      ],
+      countryOptions:[],
+      cityOptions:[],
       serverBlock:[
         {
           name:'1',
@@ -225,35 +218,237 @@ export default{
           state:0,
         },
       ],
+      countrySize:{
+        pid:'',
+      },
+      erweima:false,
     }
   },
   components:{
     indexHeader,
+    contactUs,
     // indexFooter,
     location
   },
+  created(){
+    document.documentElement.scrollTop = window.pageYOffset = document.body.scrollTop=0;
+  },
   mounted(){
+    this.getCountry();
+    // this.getStatus();
+    this.loginup();
+    this.getmobile();
+    this.jumpdown();
   },
   methods:{
+    //跳转锚点固定
+    jumpdown(){
+      // document.getElementById('nice').scrollTop =401;
+      // window.scrollTo(0,401);
+      // console.log(document.documentElement.scrollTop)
+      document.documentElement.scrollTop = window.pageYOffset = document.body.scrollTop=400;
+      // console.log("11:"+document.documentElement.scrollTop)
+      // e = ;
+    },
+    //跳转后台
+    loginBack(){
+      window.location.href = 'https://pms.licai.cn/#/';
+    },
+    //获取国家手机前缀
+    getmobile(){
+      ajax(this,this.extendApi.phoneCountry,'',(res)=>{
+        if(res.code == 200){
+          this.options = res.data;
+        }else{
+
+        }
+      },'GET')
+    },  
+
+    //跳转登陆
+    jumptologin(){
+      this.$router.push({path:"/"});
+    },
+    //获取是否登陆
+    loginup(){
+      let e = localStorage.getItem("block_fxeestoken");
+      if (e && e!=''){
+        this.getStatus();
+      }else{
+        this.dialogtit=true;
+      }
+    },
+    //获取状态
+    getStatus(){
+      ajax(this,this.extendApi.applyStatus,'',(res)=>{
+        if(res.code == 200){
+          // if(res.data.status == 1){//待申请
+          //   this.getjindu = 1;
+          // }else if(res.data.status == 2){//以申请
+          //   this.getjindu = 2;
+          //   this.showG = true;
+          //   this.applyform = res.data;
+          // }else if(res.data.status == 9){//以审核
+          //   this.getjindu = 3;
+          //   this.showG = true;
+          //   this.$notify({
+          //     title: '成功',
+          //     message: '您的申请已通过审核！',
+          //     type: 'success',
+          //     duration:'5000'
+          //   });
+          // }else if(res.data.status == -1){//以拒绝
+          //   this.getjindu = 1;
+          //   this.showG = false;
+          //   this.$notify({
+          //     title: '提示',
+          //     message: '您的申请已被拒绝！',
+          //     type: 'warning',
+          //     duration:'2000'
+          //   });
+          // }
+          if(res.data.isApplyed == 1){//以申请
+            this.getjindu = 1;
+            if(res.data.info.status == 0){//待审核
+              this.getjindu = 2;
+              this.showG = true;
+              this.applyform = res.data.info;
+              this.$notify({
+                title: '提示',
+                message: '您的申请正在审核中！',
+                type: 'warning',
+                duration:'2000'
+              });
+            }else if(res.data.info.status == 1){//以通过
+              this.show1 = false;
+              this.show3 = true;
+              this.getjindu = 3;
+              this.showG = true;
+              this.applyform = res.data.info;
+              this.$notify({
+                title: '成功',
+                message: '您的申请已通过审核！',
+                type: 'success',
+                duration:'5000'
+              });
+            }else if(res.data.info.status == -1){//以拒绝
+              this.getjindu = 1;
+              this.showG = false;
+              this.$notify({
+                title: '提示',
+                message: '您的申请已被拒绝！',
+                type: 'warning',
+                duration:'2000'
+              });
+            }
+          }else{//未申请
+
+          }
+        }else{
+
+        }
+      },'POST')
+    },
     showBtn3(key,val,index){
+      if(val == 1){
+        if(index == 1){
+          this.erweima = true;
+        }
+      }else{
+        this.erweima = false;
+      }
       this[key][index].state=val;     
     },
+    //立即申请
     applyNow(){
-      this.dialogtit=true;
-    }
+      ajax(this,this.extendApi.applyToAgent,this.applyform,(data)=>{
+        if(data.code == 200){
+          this.dialogVisible = true;
+          this.getStatus();
+        }else{
+          this.$notify({
+            title: '提示',
+            message: data.message,
+            type: 'warning',
+            duration:'2000'
+          });
+        }
+      },'POST')
+      // this.dialogtit=true;
+    },
+    //获取国家列表
+    getCountry(){
+      let param = {
+        type:'name',
+      }
+      ajax(this,this.extendApi.phoneCountry,param,(res)=>{
+        if(res.code == 200){
+          this.countryOptions = res.data;
+        }else{
+
+        }
+      },'GET');
+    },
+    //选中省份
+    getcont(e){
+      this.applyform.area = '';
+      this.countrySize.pid = e;
+      if(e == 'CN'){
+        this.showSheng = false;
+        ajax(this,this.extendApi.applyCountry,'',(param)=>{
+          if(param.code == 200){
+            this.cityOptions = param.data
+          }else{
+
+          }
+        },'GET')
+      }else{
+        this.showSheng = true;
+      }
+      
+    },
   }
 }
 </script>
-
-<style scoped>
+<style>
 .apply-content{
+  /* .el-step__head.is-text.is-process{
+    background-color:#409eff;
+    border-color:#409eff;
+  } */
+  .selsct{
+    i{
+      left: 100px !important;
+    }
+    .el-input__inner{
+      width: 130px;
+      padding-right: 0px;
+      
+    }
+  }
+  .el-button, .el-textarea__inner{
+    min-height: 40px;
+    max-height: 150px;
+  }
+}
+</style>
+<style scoped>
+.apply-block{
+  /*height: 12000px;*/
+  display: block;
+.apply-content{
+  display: block;
   padding-top:75px;
+  .enablebtn{
+    background: #d1dbe5 !important; 
+    color: #bbb !important;    
+  }
   .tt-line{
     display: flex;
     align-items: center;
     justify-content: space-between;
     h3{
-      font-size: 35px;
+      font-size: 25px;
       font-weight: bold;
       line-height: 1;
     }
@@ -265,18 +460,25 @@ export default{
     }
   }
   .sub-title{
-    font-size: 20px;
+    font-size: 16px;
     color: #999;
     margin-top: 12px;
   }
   .server-block{
+    position: relative;
     /*height: 600px;*/
     width: 1200px;
     margin: 0 auto;
     padding-top: 50px;
+    .erweima{
+     position: absolute;
+     top:0;
+     margin-top:150px;
+     margin-left:240px;
+    }
     .serverList{
       margin-top: 50px;
-      padding: 0 188px 70px 188px;
+      padding: 0 400px 70px 400px;
       display: flex;
       justify-content:space-between;
       img{
@@ -474,6 +676,7 @@ export default{
       background: #1a6fa6;
       color: #fff;
     }
+
   }
   .dialogapply{
     .dialog-content{
@@ -527,5 +730,6 @@ export default{
       transform: translateX(-50%);
     }
   } 
+}
 }
 </style> 

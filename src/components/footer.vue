@@ -7,23 +7,23 @@
           <div class="contact">
             <ul class="line">
               <li>
-                <span><i class="iconfont icon-kefuQQ"></i>客服QQ:</span>
-                <span>4001566899</span>
+                <span><i class="iconfont icon-weixin1"></i>客服微信:</span>
+                <span>fx66kefu</span>
               </li>
               <li>
                 <span><i class="iconfont icon-hotphone"></i>热线电话:</span>
-                <span>400-1566-899</span>
+                <span>+86-173 5471 8363</span>
               </li>
             </ul>
             <ul class="line">
-              <li>
+              <!-- <li>
                 <span><i class="iconfont icon-weixin1"></i>微信咨询:</span>
                 <span>公众号在线客服</span>
-              </li>
-              <li>
+              </li> -->
+              <!-- <li>
                 <span><i class="iconfont icon-tubiao01"></i>客服邮箱:</span>
                 <span>support@licai.cn</span>
-              </li>
+              </li> -->
             </ul>
           </div>
           <p>©2017杭州本链科技有限公司 All Rights Reserved <span>浙ICP备07503793</span><span>市场有风险&nbsp;投资需谨慎</span></p>

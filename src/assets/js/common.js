@@ -159,7 +159,7 @@ var ajax = function(that, url, params, success, method) {
         });
       } 
     }).catch(function(response){
-      console.log(response);
+      // console.log(response);
     })
   }else{
     params=that.querystring.stringify(params);
@@ -214,19 +214,25 @@ var ajax = function(that, url, params, success, method) {
 
 /*发送短信*/
 var sendCode=function(that,params,success){
-  params.param=params.vparam;
-  delete params.vparam;
-  ajax(that,that.extendApi.phoneCheckedNum,params,function(res){
+  // params.param=params.vparam;
+  // delete params.vparam;
+  ajax(that,that.extendApi.sedMsssss,params,function(res){
     if(typeof(success)=='function'){
       success(res);
     }
     if(res.code==200){
+      if(res.data.isShow == 1){
+        sessionStorage.setItem('alertStatus','true');
+        sessionStorage.setItem('dataSrc',res.data.data.jsUrl);
+        sessionStorage.setItem('businessId',res.data.data.businessId);
+      }
       that.$notify({
         title: '提示',
         message: '发送成功',
         type: 'success',
         duration:'2000'
       });
+      
       that.codestate=1;
       that.secondNum=60;
       clearInterval(that.reltime);
@@ -234,7 +240,7 @@ var sendCode=function(that,params,success){
         that.secondNum--;
         if(that.secondNum==0){
           clearInterval(that.reltime);
-          that.codestate=0;
+          that.codestate=2; //变成“重新发送”了！
           that.secondNum=60;
         }
       }, 1000);
@@ -244,19 +250,27 @@ var sendCode=function(that,params,success){
 
 /*发送邮件*/
 var sendEmail=function(that,params,success){
-  params.param=params.vparam;
-  delete params.vparam;
-  ajax(that,that.extendApi.sendEmail,params,function(res){
+  // params.param=params.vparam;
+  // delete params.vparam;
+  ajax(that,that.extendApi.sedEmmmmm,params,function(res){
     if(typeof(success)=='function'){
       success(res);
     }
     if(res.code==200){
+      if(res.data.isShow == 1){
+        // that.alertStatus = true;
+        sessionStorage.setItem('alertStatus','true')
+        sessionStorage.setItem('dataSrc',res.data.data.jsUrl)
+        sessionStorage.setItem('businessId',res.data.data.businessId)
+      }
       that.$notify({
         title: '提示',
         message: '发送成功',
         type: 'success',
         duration:'2000'
       });
+      
+      //that.gid = res.data.gid;
       that.codestate=1;
       that.secondNum=60;
       clearInterval(that.reltime);
@@ -264,7 +278,7 @@ var sendEmail=function(that,params,success){
         that.secondNum--;
         if(that.secondNum==0){
           clearInterval(that.reltime);
-          that.codestate=0;
+          that.codestate=2; //变成“重新发送”了！
           that.secondNum=60;
         }
       }, 1000);
@@ -274,7 +288,7 @@ var sendEmail=function(that,params,success){
 
 /*登录*/
 var sublogion=function(_this,pageindex,params,success){
-  ajax(_this, _this.extendApi.userLogin,params, function(res) {
+  ajax(_this, _this.extendApi.newLogin,params, function(res) {
     if(typeof(success)==="function"){
       success(res);
     }
@@ -289,6 +303,7 @@ var sublogion=function(_this,pageindex,params,success){
       setcookie('id', data.userid);
       ajax(_this, _this.extendApi.getUserInfo, '', function(data) {
         if(data.code==200){
+          _this.username = data.data.base.username;
           savecookie(data.data);
           setcookie('quite', '4'); //登录状态为4.未登录为0
           bus.$emit("login","h1");
@@ -299,7 +314,7 @@ var sublogion=function(_this,pageindex,params,success){
             _this.islogoin = 4;
           }
           if(_this.username){
-            _this.username = data.data.base.username;
+            _this.username = data.data.username;
           }             
           if (pageindex == 'index') {
             // _this.$router.push({
@@ -352,8 +367,9 @@ var sublogion=function(_this,pageindex,params,success){
   //   }
   // },'POST');
 }
-var subloginup=function(_this,params,success){//注册
-  ajax(_this,_this.extendApi.userLoginUp,params,function(data){
+//注册
+var subloginup=function(_this,params,success){
+  ajax(_this,_this.extendApi.newRegist,params,function(data){
     if(typeof(success)==="function"){
       success(data);
     }

@@ -12,7 +12,7 @@
         </li>
       </ul>
       <div class="userMsg" v-show="showstate===1">
-        <div class="item" @click="golink('/usercenter')">
+        <div class="item">
           <i class="iconfont icon-user"></i>
           <span >{{username}}</span>
         </div>
@@ -46,7 +46,7 @@ export default{
           link:"/index",
         },
         {
-          name:"申请代理",
+          name:"申请经纪商",
           link:"/apply",
           badge:true,
         },
@@ -60,7 +60,7 @@ export default{
   },
   mounted(){
     this.$nextTick(()=>{
-      javascript:scrollTo(0,0);
+      // javascript:scrollTo(0,0);
       if(this.$route.path=="/index"){
         this.isIndex=true;
       }

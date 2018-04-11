@@ -16,7 +16,6 @@
           <el-button :loading="setLoad" @click="reSetPwd">确定</el-button>
         </div>
       </div>
-      
     </div>
     <index-footer></index-footer>
   </div>
